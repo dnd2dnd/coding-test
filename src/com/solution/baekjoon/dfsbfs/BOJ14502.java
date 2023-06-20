@@ -1,15 +1,7 @@
 package com.solution.baekjoon.dfsbfs;
 
 /**
- * description    :
- * packageName    : com.solution.baekjoon.dfsbfs
- * fileName       : BOJ14502
- * author         : tkfdk
- * date           : 2023-06-16
- * ===========================================================
- * DATE              AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-16        tkfdk       최초 생성
+ * 백준 14502 연구소, 골드 4
  */
 import java.io.BufferedReader;
 import java.io.IOException;

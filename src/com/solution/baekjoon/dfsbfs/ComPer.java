@@ -5,15 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * description    :
- * packageName    : com.solution.baekjoon.dfsbfs
- * fileName       : ComPer
- * author         : tkfdk
- * date           : 2023-06-16
- * ===========================================================
- * DATE              AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-16        tkfdk       최초 생성
+ * description    : Permutation, Combination Java
  */
 public class ComPer {
 	public static void main(String[] args) {
