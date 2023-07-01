@@ -23,20 +23,31 @@ public class 정렬된배열에서특정수의개수구하기 {
 			num[i] = Integer.parseInt(st.nextToken());
 		}
 
-		int left = 0;
-		int right = n-1;
-		int answer = 0;
-		while(left<=right) {
-			int mid = (left + right) / 2;
+		int answer = upperBound(num, x, 0, n-1) - lowerBound(num, x, 0, n-1);
 
-			if(num[mid] < x) {
-				left = mid + 1;
+		System.out.println((answer==0) ? -1 : answer);
+	}
+	public static int lowerBound(int[] num, int x, int left, int right) {
+		while(left < right) {
+			int mid = (left + right) / 2 ;
+			if(num[mid] >= x) {
+				right = mid;
 			} else {
-				right = mid - 1;
+				left = mid + 1;
 			}
-			System.out.println(left + " " + right);
 		}
+		return right;
+	}
 
-		System.out.println(answer);
+	public static int upperBound(int[] num, int x, int left, int right) {
+		while(left < right) {
+			int mid = (left + right) / 2 ;
+			if(num[mid] > x) {
+				right = mid;
+			} else {
+				left = mid + 1;
+			}
+		}
+		return right;
 	}
 }
