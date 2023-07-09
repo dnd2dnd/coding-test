@@ -36,6 +36,7 @@ public class 특정거리의도시찾기 {
 			int b = sc.nextInt();
 
 			graph.get(a).add(b);
+
 		}
 
 		Queue<Integer> q = new LinkedList<>();
