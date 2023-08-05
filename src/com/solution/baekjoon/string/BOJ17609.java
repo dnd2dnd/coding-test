@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * 백준 17609, 회문, 골드 5
+ */
 public class BOJ17609 {
 	static String str;
 	public static void main(String[] args) throws IOException {
@@ -47,7 +50,6 @@ public class BOJ17609 {
 					return false;
 				} else return true;
 			}
-
 			left++;
 			right--;
 		}
