@@ -1,4 +1,4 @@
-package com.solution.programmers.dfsbfs;
+package com.solution.programmers;
 
 public class 네트워크 {
     class Solution {

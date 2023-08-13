@@ -1,4 +1,4 @@
-package com.solution.programmers.dfsbfs;
+package com.solution.programmers;
 
 public class 멀리뛰기 {
     class Solution {

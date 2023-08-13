@@ -1,4 +1,4 @@
-package com.solution.programmers.dfsbfs;
+package com.solution.programmers;
 import java.util.*;
 public class 게임맵최단거리 {
     class Solution {
