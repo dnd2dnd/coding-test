@@ -1,5 +1,10 @@
 package com.solution.programmers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 프로그래머스 Level 2, 기능 개발ㅎ
  */
