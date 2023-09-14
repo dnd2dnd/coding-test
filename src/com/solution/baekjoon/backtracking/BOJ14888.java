@@ -33,7 +33,7 @@ public class BOJ14888 {
 		max = Integer.MIN_VALUE;
 		min = Integer.MAX_VALUE;
 
-		back(0, 0);
+		back(nums[0], 1);
 		System.out.println(max);
 		System.out.println(min);
 	}
