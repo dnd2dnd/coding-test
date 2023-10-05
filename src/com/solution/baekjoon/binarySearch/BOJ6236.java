@@ -10,46 +10,48 @@ import java.util.StringTokenizer;
  * 백준 6236, 용돈 관리, 실버 2
  */
 public class BOJ6236 {
+	static int N, M;
+	static int[] money;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		int[] money = new int[N];
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		money = new int[N];
 
+		int max = 0;
 		for(int i=0; i<N; i++) {
 			money[i] = Integer.parseInt(br.readLine());
+			max = Math.max(max, money[i]);
 		}
 
-		Arrays.sort(money);
-
-		int left = 0;
-		int right = N-1;
-		int result = 0;
+		int left = max;
+		int right = max * 100000;
+		int result =0;
 		while(left<=right) {
 			int mid = (left+right)/2;
-			int cnt = 1;
-			int k = money[mid];
-			for(int i=0; i<N; i++) {
-				if(k>money[i]) {
-					k-=money[i];
-				} else if(k<money[i]) {
-					cnt+=(money[mid]/money[i]+1);
-					k=money[mid];
-				} else {
-					cnt++;
-					k=money[mid];
-				}
-			}
 
-			if(cnt>M) {
-				left = mid+1;
+			if(check(mid)<=M) {
+				result = mid;
+				right = mid - 1;
 			} else {
-				result = k;
-				right = mid-1;
+				left = mid + 1;
 			}
 		}
 		System.out.println(result);
+	}
+	public static int check(int mid) {
+		int count = 1;
+		int cMoney = mid;
+		for(int i=0; i<N; i++) {
+			cMoney -= money[i];
+
+			if(cMoney<0) {
+				count++;
+				cMoney = mid - money[i];
+			}
+		}
+		return count;
 	}
 }
