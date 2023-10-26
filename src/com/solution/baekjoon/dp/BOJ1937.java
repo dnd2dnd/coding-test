@@ -1,4 +1,4 @@
-package com.solution.baekjoon.dfsbfs;
+package com.solution.baekjoon.dp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 /**
- * 백준 6593, 상범 빌딩, 골드 5
+ * 백준 1937, 욕심쟁이 판다, 골드 3
  */
-public class BOJ6593 {
+public class BOJ1937 {
 	static int[] dz = {0, 0, 0, 0, 1, -1};
 	static int[] dx = {1, -1, 0, 0, 0, 0};
 	static int[] dy = {0, 0, 1, -1, 0, 0};
