@@ -39,9 +39,7 @@ public class BOJ14502 {
 
 	static public void dfs(int c) {
 		if(c==3) {
-			for(int i=0; i<n; i++) {
-				bfs();
-			}
+			bfs();
 			return;
 		}
 
