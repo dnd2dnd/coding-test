@@ -40,12 +40,6 @@ public class BOJ16928 {
 		while(!queue.isEmpty()) {
 			Node node = queue.poll();
 
-			if(nums[node.v]>0 && !check[node.v]) {
-				queue.add(new Node(nums[node.v], node.cnt+1));
-				check[node.v] = true;
-				continue;
-			}
-
 			for(int i=1; i<=6; i++) {
 				int a = node.v+i;
 
