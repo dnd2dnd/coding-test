@@ -1,0 +1,32 @@
+package com.solution.baekjoon.dp;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+/**
+ *  백준 1629, 곱셈, 실버 1
+ */
+public class BOJ1629 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int a = Integer.parseInt(st.nextToken());
+		int b = Integer.parseInt(st.nextToken());
+		int c = Integer.parseInt(st.nextToken());
+
+		System.out.println(pow(a, b, c));
+	}
+	static long pow(int a, int b, int mod) {
+		if (b == 0)
+			return 1;
+
+		long n = pow(a, b / 2, mod);
+		if (b % 2 == 0)
+			return n * n % mod;
+		else
+			return (n * n % mod) * a % mod;
+	}
+
+}
