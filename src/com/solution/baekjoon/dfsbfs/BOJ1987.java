@@ -8,6 +8,11 @@ import java.util.StringTokenizer;
 /**
  * 백준 1987, 알파벳, 골드 4
  */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 public class BOJ1987 {
 	static int[] dx = {1, -1 , 0 , 0};
 	static int[] dy = {0, 0 , 1 , -1};
@@ -29,25 +34,23 @@ public class BOJ1987 {
 				map[i][j] = str.charAt(j) - 'A';
 			}
 		}
-		dfs(0, 0, 0);
+		visited[map[0][0]] = true;
+		dfs(0, 0, 1);
 		System.out.println(max);
 	}
 	public static void dfs(int x, int y, int count) {
-		if (visited[map[x][y]]) {
-			max = Math.max(max, count);
-		} else {
-			int nx, ny;
-			visited[map[x][y]] = true;
-			for (int i = 0; i < 4; i++) {
-				nx = x + dx[i];
-				ny = y + dy[i];
+		max = Math.max(max, count);
+		int nx, ny;
+		for (int i = 0; i < 4; i++) {
+			nx = x + dx[i];
+			ny = y + dy[i];
 
-				if (nx < 0 || ny < 0 || nx >= r || ny >= c)
-					continue;
-
-				dfs(nx, ny, count+1);
+			if (nx < 0 || ny < 0 || nx >= r || ny >= c || visited[map[nx][ny]]) {
+				continue;
 			}
-			visited[map[x][y]] = false;
+			visited[map[nx][ny]] = true;
+			dfs(nx, ny, count+1);
+			visited[map[nx][ny]] = false;
 		}
 	}
 }
