@@ -1,4 +1,4 @@
-package com.solution.baekjoon;
+package com.solution.baekjoon.tree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,8 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /**
- *  백준 1991, 트리 순회, 실버 1
+ *  백준 1991, 트리 순회, 실버 1\
+ *  https://www.acmicpc.net/problem/1991
  */
 public class BOJ1991 {
 	public static class Node {
