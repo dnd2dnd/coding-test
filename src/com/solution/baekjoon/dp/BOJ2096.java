@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 /**
  *  백준 2096, 내려가기, 골드 5
+ *  https://www.acmicpc.net/problem/2096
  */
 public class BOJ2096 {
 	public static void main(String[] args) throws IOException {
