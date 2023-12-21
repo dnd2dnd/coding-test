@@ -3,68 +3,59 @@ package com.solution.baekjoon.dfsbfs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Objects;
 import java.util.StringTokenizer;
 
 /**
- * 백준 2468 안전 영역, 실버 1
+ * 백준 2468, 안전 영역, 실버 1
+ * https://www.acmicpc.net/problem/2468
  */
 public class BOJ2468 {
+	static int[] dx = {1, -1, 0, 0};
+	static int[] dy = {0, 0 ,1, -1};
 	static int n;
-	static int[][] map;
 	static boolean[][] visited;
-	static int[] sx = {1, -1, 0, 0};
-	static int[] sy = {0, 0, 1, -1};
+	static int[][] maps;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		map = new int[n][n];
-
-		int max = -1;
+		n = Integer.parseInt(br.readLine());
+		maps = new int[n+1][n+1];
+		int maxArea = Integer.MIN_VALUE;
+		int maxValue = Integer.MIN_VALUE;
 		for(int i=0; i<n; i++) {
-			st = new StringTokenizer(br.readLine());
+			StringTokenizer st = new StringTokenizer(br.readLine());
 			for(int j=0; j<n; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-				if (max<map[i][j]) max = map[i][j];
+				maps[i][j] = Integer.parseInt(st.nextToken());
+				maxValue = Math.max(maxValue, maps[i][j]);
 			}
 		}
-		int maxCnt = 1;
-		for(int i=1; i<max; i++) {
-			int cnt = 0;
-			visited = new boolean[n][n];
-			for(int j=0; j<n; j++) {
-				for(int k=0; k<n; k++) {
-					if(map[j][k]<=i) visited[j][k] = true;
-				}
-			}
 
+		for(int i=0; i<maxValue; i++) {
+			int cnt = 0;
+			visited = new boolean[n+1][n+1];
 			for(int j=0; j<n; j++) {
 				for(int k=0; k<n; k++) {
-					if(!visited[j][k]) {
-						dfs(j, k);
-						cnt+=1;
+					if(!visited[j][k] && maps[j][k]>i) {
+						check(j, k, i);
+						cnt++;
 					}
 				}
 			}
-			if(maxCnt<cnt) maxCnt = cnt;
+			maxArea = Math.max(cnt, maxArea);
 		}
-		System.out.println(maxCnt);
+		System.out.println(maxArea);
 	}
-
-	public static void dfs(int x, int y) {
-		visited[x][y] = true;
-		int dx, dy;
+	public static void check(int x, int y, int r) {
+		int nx, ny;
 		for(int i=0; i<4; i++) {
-			dx = x + sx[i];
-			dy = y + sy[i];
+			nx = x + dx[i];
+			ny = y + dy[i];
 
-			if(dx<0 || dy<0 || dx>=n || dy>=n) continue;
+			if(nx<0 || ny<0 || nx>=n || ny>=n || visited[nx][ny]) continue;
 
-			if(!visited[dx][dy]) {
-				dfs(dx, dy);
+			if(maps[nx][ny] > r) {
+				visited[nx][ny] = true;
+				check(nx, ny, r);
 			}
 		}
 	}
-
 }
