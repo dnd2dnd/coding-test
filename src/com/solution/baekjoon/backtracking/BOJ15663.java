@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
- * 백준 15663, N과 M(9) , 실버 2
+ * 백준 15663, N과 M(9), 실버 2
  */
 public class BOJ15663 {
 	static int n, m;
