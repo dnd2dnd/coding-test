@@ -1,4 +1,4 @@
-package com.solution.inflearn;
+package com.solution.inflearn.시뮬레이션;
 
 
 public class INF3 {
