@@ -22,46 +22,44 @@ public class BOJ3151 {
 		Arrays.sort(nums);
 
 		int answer = 0;
-		for (int i=0; i<n-2; i++) {
-			for (int j=i+1; j<n-1; j++) {
+		for (int i=0; i<n-3; i++) {
+			for (int j=i+1; j<n-2; j++) {
 				int v = nums[i] + nums[j];
-				int l = lower(j+1, n-1, v);
-				int u = upper(j+1, n-1, v);
+				int l = lower(j+1, n, v);
+				if (l == n || nums[l] != -v) continue;
+				int u = upper(j+1, n, v);
 
-				System.out.println(u + " " + l);
-				if(u != Integer.MIN_VALUE || l != Integer.MAX_VALUE) {
-					answer += (u-l);
-				}
+				answer += (u-l);
 			}
 		}
 		System.out.println(answer);
 	}
 	public static int lower(int start, int end, int value) {
 		int ans = Integer.MAX_VALUE;
-		while(start<=end) {
+		while(start<end) {
 			int mid = (start + end) / 2;
-			if(nums[mid] + value < 0) {
-				start = mid + 1;
+			if(nums[mid] + value >= 0) {
+				// ans = Math.min(ans, mid);
+				end = mid;
 			} else {
-				ans = Math.min(ans, mid);
-				end = mid - 1;
+				start = mid + 1;
 			}
 		}
-		return ans;
+		return start;
 	}
 
 
 	public static int upper(int start, int end, int value) {
 		int ans = Integer.MIN_VALUE;
-		while(start<=end) {
+		while(start<end) {
 			int mid = (start + end) / 2;
-			if(nums[mid] + value < 0) {
-				start = mid + 1;
+			if(nums[mid] + value > 0) {
+				// ans = Math.max(ans, mid);
+				end = mid;
 			} else {
-				ans = Math.max(ans, mid);
-				end = mid - 1;
+				start = mid + 1;
 			}
 		}
-		return ans;
+		return start;
 	}
 }
