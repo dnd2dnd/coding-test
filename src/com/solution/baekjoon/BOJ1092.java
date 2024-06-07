@@ -14,8 +14,8 @@ public class BOJ1092 {
         for(int i=0; i<n; i++) {
             cranes.add(Integer.parseInt(st.nextToken()));
         }
-        int m = Integer.parseInt(br.readLine());
 
+        int m = Integer.parseInt(br.readLine());
         List<Integer> boxes = new ArrayList<>();
         st = new StringTokenizer(br.readLine());
         for(int i=0; i<m; i++) {
