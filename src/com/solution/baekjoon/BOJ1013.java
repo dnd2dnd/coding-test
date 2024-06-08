@@ -23,7 +23,6 @@ public class BOJ1013 {
 //			}
 //		}
 		int[] numbers;
-		numbers.l
 		String str = "abc&qwe";
 		System.out.println(Arrays.toString(str.split("&")));
 
