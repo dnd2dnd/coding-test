@@ -6,47 +6,42 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-/**
- * 백준 2470번 두 용액, 골드 5
- */
 public class BOJ2470 {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-		int n = Integer.parseInt(st.nextToken());
-		st = new StringTokenizer(br.readLine());
-		int[] num = new int[n];
-		for(int i=0; i<n; i++) {
-			num[i] = Integer.parseInt(st.nextToken());
-		}
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] num = new int[n];
+        for(int i=0; i<n; i++) {
+            num[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(num);
 
-		Arrays.sort(num);
+        int low = 0;
+        int high = n-1;
+        int answer = Integer.MAX_VALUE;
+        int[] ans = new int[2];
+        while(low < high) {
+            int sum = num[low] + num[high];
 
-		int left = 0;
-		int right = num.length - 1;
-		int min = Integer.MAX_VALUE;
-		int[] answer = new int[2];
-		while(left < right) {
-			int x = num[left] + num[right];
-			int absX = Math.abs(x);
+            int abs = Math.abs(sum);
+            if (answer > abs) {
+                answer = abs;
+                ans[0] = num[low];
+                ans[1] = num[high];
+            }
 
-			if(min > absX) {
-				min = absX;
-				answer[0] = num[left];
-				answer[1] = num[right];
-			}
-
-			if(x > 0) {
-				right--;
-			} else if(x<0) {
-				left++;
-			} else {
-				answer[0] = num[left];
-				answer[1] = num[right];
-				break;
-			}
-		}
-		System.out.println(answer[0] + " " + answer[1]);
-	}
+            if (sum == 0) {
+                ans[0] = num[low];
+                ans[1] = num[high];
+                break;
+            } else if (sum > 0) {
+                high -= 1;
+            } else {
+                low += 1;
+            }
+        }
+        System.out.println(ans[0] + " " + ans[1]);
+    }
 }
