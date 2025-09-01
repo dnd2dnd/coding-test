@@ -8,61 +8,66 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ2589 {
-	public static class Node {
-		int x, y, v;
+    public static int[] dx = {1,0,-1,0};
+    public static int[] dy = {0,1,0,-1};
+    public static int k;
+    public static int n;
+    public static int time = Integer.MIN_VALUE;
 
-		public Node(int x, int y, int v) {
-			this.x = x;
-			this.y = y;
-			this.v = v;
-		}
-	}
-	static String[][] maps;
-	static int[] dx = {1, -1, 0, 0};
-	static int[] dy = {0, 0, 1, -1};
-	static int l,w;
-	static int time = Integer.MIN_VALUE;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		l = Integer.parseInt(st.nextToken());
-		w = Integer.parseInt(st.nextToken());
+    public static class Node {
+        int x;
+        int y;
+        int cnt;
 
-		maps = new String[l][w];
-		for(int i=0; i<l; i++) {
-			maps[i] = br.readLine().split("");
-		}
+        public Node(int x, int y, int cnt) {
+            this.x = x;
+            this.y = y;
+            this.cnt = cnt;
+        }
+    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		for(int i=0; i<l; i++) {
-			for(int j=0; j<w; j++) {
-				if(maps[i][j].equals("L")) {
-					bfs(i, j);
-				}
-			}
-		}
-		System.out.println(time);
-	}
-	public static void bfs(int x, int y) {
-		boolean[][] visited = new boolean[l][w];
-		Queue<Node> queue = new LinkedList<>();
-		queue.add(new Node(x, y, 0));
-		visited[x][y] = true;
+        k  = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
 
-		while(!queue.isEmpty()) {
-			Node node = queue.poll();
-			time = Math.max(time, node.v);
-			int nx, ny;
-			for(int i=0; i<4; i++) {
-				nx = node.x + dx[i];
-				ny = node.y + dy[i];
+        String[][] arr = new String[k][n];
+        for(int i=0; i<k; i++) {
+            String[] strs = br.readLine().split("");
+            for(int j=0; j<n; j++) {
+                arr[i][j] = strs[j];
+            }
+        }
 
-				if(nx < 0 || ny < 0 || nx >= l || ny >= w || visited[nx][ny] || maps[nx][ny].equals("W")) {
-					continue;
-				}
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < n; j++) {
+                if (arr[i][j].equals("L")) {
+                    bfs(i, j, arr);
+                }
+            }
+        }
+        System.out.println(time);
+    }
 
-				visited[nx][ny] = true;
-				queue.add(new Node(nx, ny, node.v+1));
-			}
-		}
-	}
+    public static void bfs(int x, int y, String[][] arr) {
+        boolean[][] visited = new boolean[k][n];
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(x, y, 0));
+
+        while(!q.isEmpty()) {
+            Node current = q.poll();
+            time = Math.max(time, current.cnt);
+            for (int i=0; i<4; i++) {
+                int nx = current.x+dx[i];
+                int ny = current.y+dy[i];
+
+                if (nx < 0 || nx >= k || ny < 0 || ny >= n || visited[nx][ny] || arr[nx][ny].equals("W")) {
+                    continue;
+                }
+                visited[nx][ny] = true;
+                q.add(new Node(nx, ny, current.cnt+1));
+            }
+        }
+    }
 }
