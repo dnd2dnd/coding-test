@@ -7,42 +7,42 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ15655 {
-	static int n, m;
-	static int[] arr;
-	static boolean[] visited;
-	static StringBuffer sb = new StringBuffer();
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+    static int N, M;
+    public static int[] arr;
+    public static boolean[] visited;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		arr = new int[n];
-		visited = new boolean[n];
-		st = new StringTokenizer(br.readLine());
-		for(int i=0; i<n; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-		}
-		Arrays.sort(arr);
-		com(0, 0, new int[m]);
-		System.out.println(sb);
-	}
-	public static void com(int x, int d, int[] temp) {
-		if(d==m) {
-			for(Integer i : temp) {
-				sb.append(i).append(" ");
-			}
-			sb.append("\n");
-			return;
-		}
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-		for(int i=x; i< arr.length; i++) {
-			if(!visited[i]) {
-				visited[i] = true;
-				temp[d] = arr[i];
-				com(i+1, d+1, temp);
-				visited[i] = false;
-			}
-		}
-	}
+        arr = new int[N];
+
+        String[] strs  = br.readLine().split(" ");
+        for(int i=0; i<N; i++) {
+            arr[i] = Integer.parseInt(strs[i]);
+        }
+        Arrays.sort(arr);
+
+        visited = new boolean[N];
+        back(0, 0, new int[M]);
+    }
+    public static void back(int x, int d, int[] temp) {
+        if (M==d) {
+            for (int v : temp) {
+                System.out.print(v + " ");
+            }
+            System.out.println();
+            return;
+        }
+        for (int i =x; i < N; i++) {
+            if (!visited[i]) {
+                temp[d] = arr[i];
+                visited[i] = true;
+                back(i+1, d+1, temp);
+                visited[i] = false;
+            }
+        }
+    }
 }
