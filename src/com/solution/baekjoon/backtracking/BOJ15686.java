@@ -8,75 +8,67 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class BOJ15686 {
-    public static class Node {
-        int x, y;
-
-        public Node (int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-    public static int N, M;
+    public static int n, m;
+    public static int cnt = Integer.MAX_VALUE;
+    public static List<Integer> nums = new ArrayList<>();
+    public static List<Node> chickens = new ArrayList<>();
+    public static List<Node> homes = new ArrayList<>();
     public static boolean[] visited;
-    public static List<Node> home = new ArrayList<>();
-    public static List<Node> chicken = new ArrayList<>();
-    public static int min = Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        for (int i=0; i<N; i++) {
-            st = new StringTokenizer(br.readLine());
-            for (int j=0; j<N; j++) {
-                int value = Integer.parseInt(st.nextToken());
-                if (value == 1) {
-                    home.add(new Node(i, j));
-                } else if (value == 2) {
-                    chicken.add(new Node(i, j));
+        for (int i=0; i<n; i++) {
+            String[] strs = br.readLine().split(" ");
+            for(int j=0; j< strs.length; j++) {
+                int x = Integer.parseInt(strs[j]);
+                if (x== 1) {
+                    homes.add(new Node(i, j));
+                }
+                if (x== 2) {
+                    chickens.add(new Node(i, j));
                 }
             }
         }
 
-        visited = new boolean[chicken.size()];
-
+        visited = new boolean[chickens.size()];
         comb(0, 0);
-        System.out.println(min);
+        System.out.println(cnt);
     }
+
     public static void comb(int d, int x) {
-        if (d == M) {
-            calculateCityChickenDistance();
+        if(d == m) {
+            int totalMin = 0;
+            for (Node home : homes) {
+                int min = Integer.MAX_VALUE;
+                for (int i = 0; i < chickens.size(); i++) {
+                    if(visited[i]) {
+                        int value = Math.abs(chickens.get(i).x - home.x) + Math.abs(chickens.get(i).y - home.y);
+                        min = Math.min(value, min);
+                    }
+                }
+                totalMin += min;
+            }
+            cnt = Math.min(totalMin, cnt);
         }
 
-        for (int i = x; i < chicken.size(); i++) {
+        for (int i = x; i < chickens.size(); i++) {
             if (!visited[i]) {
                 visited[i] = true;
                 comb(d+1, i+1);
                 visited[i] = false;
             }
         }
-
     }
 
-    public static void calculateCityChickenDistance() {
-        int totalDistance = 0;
+    public static class Node {
+        int x, y;
 
-        for (Node house : home) {
-            int minDistanceForHouse = Integer.MAX_VALUE;
-
-            for (int i = 0; i < chicken.size(); i++) {
-                if (visited[i]) {
-                    // 선택된 치킨집에 대해 거리 계산
-                    Node cNode = chicken.get(i);
-                    int distance = Math.abs(house.x - cNode.x) + Math.abs(house.y - cNode.y);
-                    minDistanceForHouse = Math.min(minDistanceForHouse, distance);
-                }
-            }
-            totalDistance += minDistanceForHouse;
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-
-        min = Math.min(min, totalDistance);
     }
 }
