@@ -5,44 +5,38 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-/**
- *  백준 2096, 내려가기, 골드 5
- *  https://www.acmicpc.net/problem/2096
- */
 public class BOJ2096 {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		int[] dp = new int[6];
-		StringTokenizer st;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		int a, b, c;
-		for(int i=0; i<n; i++) {
-			st = new StringTokenizer(br.readLine());
-			a = Integer.parseInt(st.nextToken());
-			b = Integer.parseInt(st.nextToken());
-			c = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int[][] minDp = new int[2][3];
+        int[][] maxDp = new int[2][3];
+        for(int i=1; i<=n; i++) {
+            st = new StringTokenizer(br.readLine());
 
-			if(i==0) {
-				dp[0] = dp[3] = a;
-				dp[1] = dp[4] = b;
-				dp[2] = dp[5] = c;
-			} else {
-				int temp0 = dp[0];
-				int temp2 = dp[2];
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
 
-				dp[0] = Math.max(dp[0], dp[1]) + a;
-				dp[2] = Math.max(dp[1], dp[2]) + c;
-				dp[1] = Math.max(temp0, Math.max(dp[1], temp2)) + b;
+            minDp[0][0] = minDp[1][0];
+            minDp[0][1] = minDp[1][1];
+            minDp[0][2] = minDp[1][2];
 
-				int temp3 = dp[3];
-				int temp5 = dp[5];
-				dp[3] = Math.min(dp[3], dp[4]) + a;
-				dp[5] = Math.min(dp[4], dp[5]) + c;
-				dp[4] = Math.min(temp3, Math.min(dp[4], temp5)) + b;
-			}
-		}
-		System.out.println(Math.max(dp[0], Math.max(dp[1], dp[2])) + " "
-			+ Math.min(dp[3], Math.min(dp[4], dp[5])));
-	}
+            minDp[1][0] = Math.min(minDp[0][0], minDp[0][1]) + a;
+            minDp[1][1] = Math.min(minDp[0][0], Math.min(minDp[0][1], minDp[0][2])) + b;
+            minDp[1][2] = Math.min(minDp[0][1], minDp[0][2]) + c;
+
+            maxDp[0][0] = maxDp[1][0];
+            maxDp[0][1] = maxDp[1][1];
+            maxDp[0][2] = maxDp[1][2];
+
+            maxDp[1][0] = Math.max(maxDp[0][0], maxDp[0][1]) + a;
+            maxDp[1][1] = Math.max(maxDp[0][0], Math.max(maxDp[0][1], maxDp[0][2])) + b;
+            maxDp[1][2] = Math.max(maxDp[0][1], maxDp[0][2]) + c;
+        }
+        System.out.println(Math.max(maxDp[1][0], Math.max(maxDp[1][1], maxDp[1][2])) + " " +
+                Math.min(minDp[1][0], Math.min(minDp[1][1], minDp[1][2])));
+    }
 }
