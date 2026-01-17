@@ -1,8 +1,5 @@
 package com.solution.baekjoon.dfsbfs;
 
-/**
- * 백준 14502 연구소, 골드 4
- */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,99 +8,95 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ14502 {
-	static int n, m;
-	static int[][] map;
-	static int[] sx = {1,-1,0,0};
-	static int[] sy = {0,0,1,-1};
-	static int max = -1;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+    public static int n, m;
+    public static int[][] maps;
+    public static boolean[][] visited;
+    public static int[] dx = {1, -1, 0, 0};
+    public static int[] dy = {0, 0 ,1 ,-1};
+    public static int cnt = 0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		map = new int[n][m];
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        maps = new int[n][m];
+        for (int i=0; i<n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j=0; j<m; j++) {
+                maps[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        dfs(0);
+        System.out.println(cnt);
+    }
 
-		for(int i=0; i<n; i++) {
-			st = new StringTokenizer(br.readLine());
-			for(int k=0; k<m; k++) {
-				map[i][k] = Integer.parseInt(st.nextToken());
-			}
-		}
+    public static void bfs() {
+        Queue<Node> queue = new LinkedList<>();
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<m; j++) {
+                if (maps[i][j] == 2) {
+                    queue.add(new Node(i, j));
+                }
+            }
+        }
 
-		dfs(0);
+        int[][] copyMap = new int[n][m];
+        for (int i=0; i<n; i++) {
+            copyMap[i] = maps[i].clone();
+        }
+        while(!queue.isEmpty()) {
+            Node node = queue.poll();
+            int nx, ny;
+            for (int i=0; i<4; i++) {
+                nx = node.x + dx[i];
+                ny = node.y + dy[i];
 
-		System.out.println(max);
-	}
+                if (nx < 0 || ny < 0 || nx >= n || ny >= m) {
+                    continue;
+                }
 
-	static public void dfs(int c) {
-		if(c==3) {
-			bfs();
-			return;
-		}
+                if (copyMap[nx][ny] == 0) {
+                    queue.add(new Node(nx, ny));
+                    copyMap[nx][ny] = 2;
+                }
+            }
+        }
 
-		for(int i=0; i<n; i++) {
-			for(int j=0; j<m; j++) {
-				if(map[i][j]==0) {
-					map[i][j] = 1;
-					dfs(c+1);
-					map[i][j] = 0;
-				}
-			}
-		}
-	}
+        int c = 0;
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<m; j++) {
+                if (copyMap[i][j] == 0) {
+                    c++;
+                }
+            }
+        }
+        cnt = Math.max(c, cnt);
+    }
 
-	static public void bfs() {
-		Queue<Node> q = new LinkedList<>();
+    public static void dfs(int d) {
+        if (d == 3) {
+            bfs();
+            return;
+        }
 
-		for(int i=0; i<n; i++) {
-			for(int j=0; j<m; j++) {
-				if(map[i][j] == 2) {
-					q.add(new Node(i, j));
-				}
-			}
-		}
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<m; j++) {
+                if (maps[i][j] == 0) {
+                    maps[i][j] = 1;
+                    dfs(d+1);
+                    maps[i][j] = 0;
+                }
+            }
+        }
+    }
 
-		int[][] copyMap = new int[n][m];
-		for (int i=0; i<n; i++) {
-			copyMap[i] = map[i].clone();
-		}
+    public static class Node {
+        int x, y;
 
-		while(!q.isEmpty()) {
-			Node nd = q.poll();
-
-			for(int i=0; i<4; i++) {
-				int dx = nd.x + sx[i];
-				int dy = nd.y + sy[i];
-
-				if(dx<0 || dy<0 || dx>=n || dy>=m) continue;
-
-				if(copyMap[dx][dy] == 0) {
-					q.add(new Node(dx, dy));
-					copyMap[dx][dy] = 2;
-				}
-			}
-		}
-
-		int sum=0;
-		for(int i=0; i<n; i++) {
-			for(int j=0; j<m; j++) {
-				if(copyMap[i][j]==0) {
-					sum+=1;
-				}
-			}
-		}
-
-		if (max<sum) max=sum;
-	}
-
-	static class Node {
-		int x,y;
-		Node(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
 }
-
