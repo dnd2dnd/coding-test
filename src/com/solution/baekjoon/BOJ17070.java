@@ -5,57 +5,48 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-/**
- *  백준 17070, 파이프 옮기기 1, 골드 5
- */
 public class BOJ17070 {
-	public static class Node {
-		int x1, y1, x2, y2;
+    public static int N, cnt;
+    public static int[][] maps;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        maps = new int[N][N];
+        for (int i=0; i<N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j=0; j<N; j++) {
+                maps[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        dfs(0, 1, 0);
+        System.out.println(cnt);
+    }
 
-		public Node(int x1, int y1, int x2, int y2) {
-			this.x1 = x1;
-			this.y1 = y1;
-			this.x2 = x2;
-			this.y2 = y2;
-		}
-	}
-	static int[][] map;
-	static int n, cnt = 0;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		n = Integer.parseInt(br.readLine());
-		map = new int[n+1][n+1];
+    public static void dfs(int x, int y, int direction) {
+        if (x < 0 || y < 0 || x>=N || y>=N || maps[x][y] == 1) {
+            return;
+        }
 
-		StringTokenizer st;
-		for(int i=0; i<n; i++) {
-			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<n; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
-		dfs(0, 1, 1);
-		System.out.println(cnt);
-	}
+        if (direction == 0) {
+            dfs(x, y+1, 0);
+            dfs(x+1, y+1, 2);
+        } else if (direction == 1) {
+            dfs(x+1, y, 1);
+            dfs(x+1, y+1, 2);
+        } else if (direction == 2) {
+            if (maps[x-1][y] == 1 || maps[x][y-1] == 1) {
+                return;
+            }
 
-	public static void dfs(int x, int y, int pipe) {
-		if(x<0 || y<0 || x>=n || y>=n || map[x][y] ==1 ) return;
+            dfs(x, y+1, 0);
+            dfs(x+1, y, 1);
+            dfs(x+1, y+1, 2);
+        }
 
-		if(pipe == 1) {
-			dfs(x, y+1, 1);
-			dfs(x+1, y+1, 3);
-		} else if(pipe == 2) {
-			dfs(x+1, y, 2);
-			dfs(x+1, y+1, 3);
-		} else if(pipe == 3) {
-			if(map[x-1][y]==1 || map[x][y-1]==1) return;
-			dfs(x, y+1, 1);
-			dfs(x+1, y, 2);
-			dfs(x+1, y+1, 3);
-		}
-
-		if(x==n-1 && y==n-1) {
-			cnt++;
-		}
-	}
-
+        if (x==N-1 && y==N-1) {
+            cnt++;
+        }
+    }
 }
+
