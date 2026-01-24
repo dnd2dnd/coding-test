@@ -4,95 +4,91 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
-/**
- *  백준 1865, 웜홀, 골드 3
- */
 public class BOJ1865 {
-	public static class Node {
-		int x, y, value;
+    public static int cnt;
+    public static boolean[] visited;
+    public static List<List<Node>> loads;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(st.nextToken());
+        for (int q=0; q<T; q++) {
+            loads = new ArrayList<>();
+            st = new StringTokenizer(br.readLine());
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
+            for (int i=0; i<=n; i++) {
+                loads.add(new ArrayList<>());
+            }
+            visited = new boolean[n+1];
 
-		public Node(int x, int y, int value) {
-			this.x = x;
-			this.y = y;
-			this.value = value;
-		}
-	}
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int tc = Integer.parseInt(br.readLine());
-		StringTokenizer st;
-		for(int q=0; q<tc; q++) {
-			st = new StringTokenizer(br.readLine());
-			int n = Integer.parseInt(st.nextToken());
-			int m = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
 
-			ArrayList<Node> list = new ArrayList<>();
+            for (int i=0; i<m; i++) {
+                st = new StringTokenizer(br.readLine());
+                int s = Integer.parseInt(st.nextToken());
+                int e = Integer.parseInt(st.nextToken());
+                int t = Integer.parseInt(st.nextToken());
+                loads.get(s).add(new Node(e, t));
+                loads.get(e).add(new Node(s, t));
+            }
 
-			int s, e, t;
-			for(int i=0; i<m; i++) {
-				st = new StringTokenizer(br.readLine());
-				s = Integer.parseInt(st.nextToken());
-				e = Integer.parseInt(st.nextToken());
-				t = Integer.parseInt(st.nextToken());
-				list.add(new Node(s, e, t));
-				list.add(new Node(e, s, t));
-			}
+            for (int i=0; i<w; i++) {
+                st = new StringTokenizer(br.readLine());
+                int s = Integer.parseInt(st.nextToken());
+                int e = Integer.parseInt(st.nextToken());
+                int t = Integer.parseInt(st.nextToken());
+                loads.get(s).add(new Node(e, -t));
+            }
 
-			for(int i=0; i<w; i++) {
-				st = new StringTokenizer(br.readLine());
-				s = Integer.parseInt(st.nextToken());
-				e = Integer.parseInt(st.nextToken());
-				t = Integer.parseInt(st.nextToken());
-				list.add(new Node(s, e, -t));
-			}
+            int[] dist = new int[n+1];
+            Arrays.fill(dist, 0);
+            boolean hasCycle = false;
+            for (int i=1; i<=n; i++) {
+                boolean hasUpdate = false;
 
-			boolean check = false;
-			for(int i=1; i<=n; i++) {
-				if(rec(i, n, list)) {
-					check = true;
-					break;
-				}
-			}
-			if(check) {
-				System.out.println("YES");
-			} else {
-				System.out.println("NO");
-			}
-		}
-	}
-	public static boolean rec(int x, int n, ArrayList<Node> list) {
-		int[] area = new int[n+1];
-		for(int i=0; i<=n; i++) {
-			area[i] = 5000000;
-		}
-		area[x] = 0;
-		boolean check = false;
-		for(int i=1; i<n; i++) {
-			check = false;
-			for (Node node : list) {
-				if(area[node.x] != 5000000 && area[node.x] + node.value < area[node.y]) {
-					area[node.y] = area[node.x] + node.value;
-					check = true;
-				}
-			}
+                for (int j=1; j<=n; j++) {
+                    for (Node node : loads.get(j)) {
+                        if (dist[node.end] > dist[j] + node.time) {
+                            dist[node.end] = dist[j] + node.time;
+                            hasUpdate = true;
 
-			if(!check) {
-				break;
-			}
-		}
+                            if (i==n) {
+                                hasCycle = true;
+                            }
+                        }
+                    }
+                }
 
-		if(check) {
-			for (Node node : list) {
-				if(area[node.x] != 5000000 && area[node.x] + node.value < area[node.y]) {
-					area[node.y] = area[node.x] + node.value;
-					return true;
-				}
-			}
-		}
+                if (!hasUpdate) {
+                    break;
+                }
+            }
+            sb.append(hasCycle ? "YES\n" : "NO\n");
+        }
+        System.out.println(sb);
 
-		return false;
-	}
+    }
+    public static class Node {
+        int end, time;
+
+        public Node(int end, int time) {
+            this.end = end;
+            this.time = time;
+        }
+    }
+    public static void dfs(int x) {
+        for (Node node : loads.get(x)) {
+            if (!visited[node.end]) {
+                visited[node.end] = true;
+                cnt += node.time;
+                dfs(node.end);
+            }
+        }
+    }
 }
