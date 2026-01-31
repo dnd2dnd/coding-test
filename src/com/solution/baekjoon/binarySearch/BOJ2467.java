@@ -3,43 +3,50 @@ package com.solution.baekjoon.binarySearch;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-/**
- *  백준 2467, 용액, 골드 5
- *  https://www.acmicpc.net/problem/2467
- */
 public class BOJ2467 {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		int[] solution = new int[n+1];
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0; i<n; i++) {
-			solution[i] = Integer.parseInt(st.nextToken());
-		}
+    public static int n, cnt = Integer.MAX_VALUE;
+    public static int[] arr;
+    public static int[] answer = new int[2];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
 
-		long min = Long.MAX_VALUE;
-		int left =0, right = n-1;
-		int[] answer = new int[2];
-		while(left<right) {
-			long value = solution[left] + solution[right];
-			if(Math.abs(value)<min) {
-				min = Math.abs(value);
-				answer[0] = solution[left];
-				answer[1] = solution[right];
-			}
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-			if(value>=0) {
-				right--;
-			} else {
-				left++;
-			}
-		}
+        arr = new int[n];
+        for (int i=0; i<n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
 
-		for (int i : answer) {
-			System.out.print(i+ " ");
-		}
-	}
+        Arrays.sort(arr);
 
+        int s = 0;
+        int e = n-1;
+
+        while(s<e) {
+            int x = arr[s];
+            int y = arr[e];
+            int value = x+y;
+            if (Math.abs(value) <= cnt) {
+                cnt = Math.abs(value);
+                answer[0] = x;
+                answer[1] = y;
+            }
+
+            if (value > 0) {
+                e--;
+            } else if(value < 0) {
+                s++;
+            } else {
+                break;
+            }
+
+        }
+        for (int i : answer) {
+            System.out.print(i +" ");
+        }
+    }
 }
