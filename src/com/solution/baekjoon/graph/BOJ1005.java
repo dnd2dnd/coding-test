@@ -16,23 +16,23 @@ public class BOJ1005 {
 
         for (int t=0; t<T; t++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(st.nextToken());
-            int k = Integer.parseInt(st.nextToken());
-
-            String[] strs = br.readLine().split(" ");
+            int N = Integer.parseInt(st.nextToken());
+            int K = Integer.parseInt(st.nextToken());
 
             List<List<Integer>> list = new ArrayList<>();
             list.add(new ArrayList<>());
-            int[] point = new int[n+1];
-            int[] dp = new int[n+1];
-            for (int i=1; i<=n; i++) {
+
+            int[] buildings = new int[N+1];
+            int[] condition = new int[N+1];
+            int[] dp = new int[N+1];
+            st = new StringTokenizer(br.readLine());
+            for (int n=1; n<=N; n++) {
                 list.add(new ArrayList<>());
-                point[i] = Integer.parseInt(strs[i-1]);
-                dp[i] = point[i];
+                buildings[n] = Integer.parseInt(st.nextToken());
+                dp[n] = buildings[n];
             }
 
-            int[] condition = new int[n+1];
-            for (int i=0; i<k; i++) {
+            for (int k=0; k<K; k++) {
                 st = new StringTokenizer(br.readLine());
                 int x = Integer.parseInt(st.nextToken());
                 int y = Integer.parseInt(st.nextToken());
@@ -40,26 +40,27 @@ public class BOJ1005 {
                 list.get(x).add(y);
                 condition[y]++;
             }
-            int w = Integer.parseInt(br.readLine());
-            
+
+            int W = Integer.parseInt(br.readLine());
+
             Queue<Integer> queue = new LinkedList<>();
-            for (int i=0; i<=n; i++) {
+            for (int i = 0; i < condition.length; i++) {
                 if (condition[i] == 0) {
                     queue.add(i);
                 }
             }
-            
-            while(!queue.isEmpty()) {
-                int x = queue.poll();
-                for (Integer next : list.get(x)) {
-                    dp[next] = Math.max(dp[next], dp[x] + point[next]);
-                    condition[next]--;
-                    if (condition[next] == 0) {
-                        queue.add(next);
+
+            while (!queue.isEmpty()) {
+                int v = queue.poll();
+                for (Integer i : list.get(v)) {
+                    dp[i] = Math.max(dp[v] + buildings[i], dp[i]);
+                    condition[i]--;
+                    if (condition[i] == 0) {
+                        queue.add(i);
                     }
                 }
             }
-            System.out.println(dp[w]);
+            System.out.println(dp[W]);
         }
     }
 }
