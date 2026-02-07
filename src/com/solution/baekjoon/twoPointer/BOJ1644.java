@@ -7,55 +7,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BOJ1644 {
-
+    public static List<Integer> primes = new ArrayList<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-
-        List<Integer> nums = getPrimes(N);
-
-        int cnt = 0;
-        int sum = 0;
-        int start = 0;
-        int end = 0;
-        while (true) {
-            if (sum >= N) {
-                sum -= nums.get(start);
-                start++;
-            } else if (end >= nums.size()) {
-                break;
-            } else {
-                sum += nums.get(end);
-                end++;
+        int n = Integer.parseInt(br.readLine());
+        int answer = 0;
+        if (n>2) {
+            for (int i=2; i<=n; i++) {
+                isDecimal(i);
             }
 
-            if (sum == N) {
-                cnt++;
+            int s = 0, e = 0;
+            int sum =0;
+//            System.out.println(primes);
+            while(s<=e && e < primes.size()) {
+                sum += primes.get(e);
+
+                while (sum >= n) {
+//                    System.out.println("sum :" + sum);
+                    if (sum == n) {
+                        answer++;
+                    }
+                    sum -= primes.get(s);
+                    s++;
+                }
+                e++;
             }
+
+        } else if (n==2) {
+            answer = 1;
         }
-        System.out.println(cnt);
+
+        System.out.println(answer);
+
     }
 
-    private static List<Integer> getPrimes(int N) {
-        boolean[] isPrime = new boolean[N + 1];
-        for (int i = 2; i <= N; i++) {
-            isPrime[i] = true;
-        }
-
-        for (int i = 2; i * i <= N; i++) {
-            if (isPrime[i]) {
-                for (int j = i * i; j <= N; j += i) {
-                    isPrime[j] = false;
-                }
+    public static void isDecimal(int x) {
+        for (int i=2; i<=Math.sqrt(x); i++) {
+            if (x%i == 0) {
+                return;
             }
         }
 
-        List<Integer> primes = new ArrayList<>();
-        for (int i = 2; i <= N; i++) {
-            if (isPrime[i]) {
-                primes.add(i);
-            }
-        }
-        return primes;
+        primes.add(x);
     }
 }
